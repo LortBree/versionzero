@@ -1,0 +1,446 @@
+/* Custom Arch Logo Left (pojok kiri, union sidebar) */
+#custom-arch-logo-left {
+  width: 72px;
+  height: 72px;
+  font-size: 48px;
+  color: var(--text);
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 4px 24px var(--glass-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  margin-right: 16px;
+  border: 3px solid var(--secondary);
+  transition: box-shadow 0.2s, border 0.2s;
+  cursor: pointer;
+}
+#custom-arch-logo-left:hover {
+  box-shadow: 0 8px 32px var(--secondary);
+  border: 3px solid #fff;
+}
+
+/* Custom Arch Logo Right (pojok kanan, union topbar) */
+#custom-arch-logo-right {
+  width: 56px;
+  height: 56px;
+  font-size: 36px;
+  color: var(--text);
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 4px 24px var(--glass-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16px;
+  margin-right: 8px;
+  border: 3px solid var(--secondary);
+  transition: box-shadow 0.2s, border 0.2s;
+  cursor: pointer;
+}
+#custom-arch-logo-right:hover {
+  box-shadow: 0 8px 32px var(--secondary);
+  border: 3px solid #fff;
+}
+
+/* Running Apps (di kiri, setelah logo) */
+#custom-running-apps {
+  font-size: 16px;
+  color: var(--text-subtle);
+  background: transparent;
+  margin-right: 16px;
+  margin-left: 0;
+  padding: 0 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  min-width: 120px;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Clock Dropdown (tengah, shape melengkung & segitiga) */
+#custom-clock-dropdown {
+  position: relative;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--text);
+  background: var(--glass-bg);
+  border-radius: 32px 32px 40px 40px / 32px 32px 80px 80px;
+  box-shadow: 0 8px 32px var(--glass-shadow);
+  padding: 16px 48px 24px 48px;
+  margin: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+#custom-clock-dropdown::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 18px;
+  background: transparent;
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+  background: var(--glass-bg);
+  box-shadow: 0 4px 16px var(--glass-shadow);
+}
+#custom-clock-dropdown:hover {
+  background: rgba(255,255,255,0.10);
+  box-shadow: 0 12px 48px var(--glass-shadow);
+}
+
+/* Responsif untuk resolusi 1440x1024 dan lebih kecil */
+@media (max-width: 1440px) {
+  #custom-arch-logo-left {
+    width: 56px; height: 56px; font-size: 36px;
+  }
+  #custom-arch-logo-right {
+    width: 44px; height: 44px; font-size: 28px;
+  }
+  #custom-clock-dropdown {
+    font-size: 22px;
+    padding: 12px 32px 18px 32px;
+  }
+}
+@media (max-width: 1024px) {
+  #custom-arch-logo-left, #custom-arch-logo-right {
+    width: 36px; height: 36px; font-size: 20px;
+  }
+  #custom-clock-dropdown {
+    font-size: 16px;
+    padding: 8px 16px 12px 16px;
+  }
+}
+/* versionzero - Waybar Glassmorphism Styles */
+/* ~/.config/waybar/style.css */
+
+/* Color Variables - will be injected by color script */
+:root {
+  --primary: #1F1C2C;
+  --secondary: #928DAB;
+  --accent: rgba(31, 28, 44, 0.5);
+  --text: #FFFFFF;
+  --text-subtle: rgba(255, 255, 255, 0.8);
+  --warning: #FFD700;
+  --error: #FF4444;
+  
+  /* Glassmorphism Variables */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+  --glass-shadow: rgba(0, 0, 0, 0.25);
+  --blur-strength: 35px;
+  
+  /* Liquid Animation Easing */
+  --liquid-easing: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --bounce-easing: cubic-bezier(0.05, 0.9, 0.1, 1.05);
+}
+
+/* Keyframes for liquid animations */
+@keyframes liquid-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes gooey-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  60% {
+    transform: scale(1.05);
+  }
+  80% {
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes subtle-float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Main Waybar Container */
+window#waybar {
+  font-family: "JetBrains Mono Nerd Font", monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  background: transparent;
+  animation: liquid-fade-in 0.8s var(--liquid-easing) forwards;
+}
+
+/* Glassmorphism Base Style */
+.modules-left,
+.modules-center, 
+.modules-right {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur-strength));
+  border: 1px solid transparent;
+  background-image: var(--glass-border);
+  background-clip: border-box;
+  border-radius: 16px;
+  margin: 4px;
+  padding: 8px 16px;
+  box-shadow: 
+    0 8px 32px var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s var(--liquid-easing);
+}
+
+.modules-left:hover,
+.modules-center:hover,
+.modules-right:hover {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 12px 48px var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Arch Logo */
+#custom-arch-logo {
+  font-size: 20px;
+  color: var(--text);
+  margin-right: 12px;
+  animation: subtle-float 4s var(--liquid-easing) infinite;
+  transition: all 0.2s var(--liquid-easing);
+}
+
+#custom-arch-logo:hover {
+  color: var(--secondary);
+  transform: scale(1.1) translateY(-2px);
+}
+
+/* Workspaces */
+#workspaces {
+  margin: 0 8px;
+}
+
+#workspaces button {
+  padding: 6px 12px;
+  margin: 0 2px;
+  color: var(--text-subtle);
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  transition: all 0.3s var(--liquid-easing);
+  font-weight: 600;
+}
+
+#workspaces button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+
+#workspaces button.active {
+  background: var(--accent);
+  color: var(--text);
+  box-shadow: 0 4px 16px rgba(31, 28, 44, 0.3);
+  animation: gooey-pop-in 0.5s var(--bounce-easing) forwards;
+}
+
+/* Window Title */
+#window {
+  color: var(--text-subtle);
+  margin-left: 12px;
+  font-style: italic;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Dropdown Toggle - Central Arrow */
+#custom-dropdown-toggle {
+  font-size: 16px;
+  color: var(--text);
+  margin: 0 16px;
+  cursor: pointer;
+  transition: all 0.3s var(--liquid-easing);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+#custom-dropdown-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.2) rotate(180deg);
+}
+
+/* Clock */
+#clock {
+  font-weight: bold;
+  font-size: 16px;
+  color: var(--text);
+  margin: 0 8px;
+  letter-spacing: 1px;
+}
+
+/* System Tray */
+#tray {
+  margin: 0 8px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: var(--warning);
+  border-radius: 8px;
+  animation: gooey-pop-in 0.5s var(--bounce-easing) forwards;
+}
+
+/* Audio */
+#pulseaudio {
+  color: var(--text);
+  margin: 0 8px;
+  transition: all 0.2s var(--liquid-easing);
+}
+
+#pulseaudio:hover {
+  color: var(--secondary);
+  transform: scale(1.05);
+}
+
+#pulseaudio.muted {
+  color: var(--error);
+}
+
+/* Network */
+#network {
+  color: var(--text);
+  margin: 0 8px;
+  transition: all 0.2s var(--liquid-easing);
+}
+
+#network:hover {
+  color: var(--secondary);
+  transform: scale(1.05);
+}
+
+#network.disconnected {
+  color: var(--error);
+}
+
+/* Battery */
+#battery {
+  color: var(--text);
+  margin: 0 8px;
+  transition: all 0.2s var(--liquid-easing);
+}
+
+#battery:hover {
+  color: var(--secondary);
+  transform: scale(1.05);
+}
+
+#battery.charging {
+  color: var(--warning);
+  animation: subtle-float 2s var(--liquid-easing) infinite;
+}
+
+#battery.warning:not(.charging) {
+  color: var(--warning);
+  animation: gooey-pop-in 1s var(--bounce-easing) infinite alternate;
+}
+
+#battery.critical:not(.charging) {
+  color: var(--error);
+  animation: gooey-pop-in 0.8s var(--bounce-easing) infinite alternate;
+}
+
+/* Power Button */
+#custom-power {
+  color: var(--text);
+  font-size: 16px;
+  margin-left: 12px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: all 0.2s var(--liquid-easing);
+}
+
+#custom-power:hover {
+  background: var(--error);
+  color: #FFFFFF;
+  transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 1366px) {
+  .modules-left,
+  .modules-center,
+  .modules-right {
+    padding: 6px 12px;
+  }
+  
+  window#waybar {
+    font-size: 13px;
+  }
+}
+
+/* Module spacing adjustments */
+.modules-left > * {
+  margin: 0 4px;
+}
+
+.modules-center > * {
+  margin: 0 4px;
+}
+
+.modules-right > * {
+  margin: 0 4px;
+}
+
+/* Tooltip styling */
+tooltip {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur-strength));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: var(--text);
+  padding: 8px 12px;
+  box-shadow: 0 8px 32px var(--glass-shadow);
+}
+
+tooltip label {
+  color: var(--text);
+}
+
+/* Custom scrollbar for tooltips */
+tooltip scrollbar {
+  background: transparent;
+}
+
+tooltip scrollbar slider {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+}
+
+tooltip scrollbar slider:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

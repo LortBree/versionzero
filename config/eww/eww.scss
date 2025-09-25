@@ -1,0 +1,237 @@
+// Topbar Dropdown Styles
+.topbar-dropdown {
+	position: absolute;
+	top: 96px;
+	left: 400px;
+	width: 640px;
+	min-height: 320px;
+	background: rgba(255,255,255,0.10);
+	border-radius: 32px;
+	box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+	backdrop-filter: blur(32px);
+	padding: 32px 40px 32px 40px;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	z-index: 200;
+	color: #1F1C2C;
+}
+
+.dropdown-tabs {
+	display: flex;
+	flex-direction: row;
+	gap: 16px;
+	margin-bottom: 24px;
+}
+.dropdown-tabs > * {
+	flex: 1;
+}
+.tab {
+	background: none;
+	border: none;
+	font-size: 1.1em;
+	font-weight: 600;
+	color: #928DAB;
+	padding: 12px 0;
+	border-bottom: 3px solid transparent;
+	cursor: pointer;
+	transition: color 0.2s, border 0.2s;
+}
+.tab.active {
+	color: #1F1C2C;
+	border-bottom: 3px solid #928DAB;
+}
+.tab-content {
+	margin-top: 12px;
+	padding: 8px 0;
+	min-height: 180px;
+}
+.calendar {
+	margin-bottom: 16px;
+}
+.sticky-note {
+	background: rgba(255,255,255,0.18);
+	border-radius: 12px;
+	padding: 12px 16px;
+	margin-bottom: 8px;
+	color: #1F1C2C;
+	font-size: 1em;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+	cursor: pointer;
+	transition: background 0.2s;
+}
+.sticky-note:hover {
+	background: #928DAB22;
+}
+.task-info {
+	font-size: 1em;
+	color: #1F1C2C;
+	margin-bottom: 8px;
+}
+@media (max-width: 900px) {
+	.topbar-dropdown {
+		width: 96vw;
+		left: 2vw;
+		padding: 16px 8px;
+	}
+}
+// Sidebar Glassmorphism Styles
+$sidebar-width: 96px;
+$sidebar-radius: 48px;
+$sidebar-bg: rgba(255,255,255,0.08);
+$sidebar-blur: 32px;
+$sidebar-shadow: 0 8px 32px rgba(0,0,0,0.25);
+$accent: #928DAB;
+$primary: #1F1C2C;
+$text: #fff;
+
+.sidebar {
+	width: $sidebar-width;
+	height: 100vh;
+	background: $sidebar-bg;
+	border-radius: $sidebar-radius;
+	box-shadow: $sidebar-shadow;
+	backdrop-filter: blur($sidebar-blur);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	padding: 24px 0;
+}
+
+.sidebar-top {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 24px;
+}
+
+.arch-logo {
+	width: 64px;
+	height: 64px;
+	font-size: 48px;
+	color: $text;
+	background: $primary;
+	border-radius: 50%;
+	box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 16px;
+	border: 3px solid $accent;
+	transition: box-shadow 0.2s, border 0.2s;
+	cursor: pointer;
+	&:hover {
+		box-shadow: 0 8px 32px $accent;
+		border: 3px solid lighten($accent, 10%);
+	}
+}
+
+.workspaces {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+.workspace-btn {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: transparent;
+	color: $text;
+	font-size: 18px;
+	border: 2px solid $accent;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.2s, border 0.2s;
+	&:hover, &.active {
+		background: $accent;
+		color: $primary;
+		border: 2px solid $primary;
+	}
+}
+
+.sidebar-center {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 24px;
+}
+.app-btn {
+	width: 48px;
+	height: 48px;
+	border-radius: 16px;
+	background: rgba(255,255,255,0.10);
+	color: $text;
+	font-size: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 4px 0;
+	border: none;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+	transition: background 0.2s, color 0.2s;
+	cursor: pointer;
+	&:hover {
+		background: $accent;
+		color: $primary;
+	}
+}
+
+.sidebar-bottom {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 18px;
+}
+.sys-btn {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: rgba(255,255,255,0.10);
+	color: $text;
+	font-size: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+	transition: background 0.2s, color 0.2s;
+	cursor: pointer;
+	&:hover {
+		background: $accent;
+		color: $primary;
+	}
+}
+
+.wallpaper-popup, .power-popup {
+	position: absolute;
+	left: 110px;
+	top: 40px;
+	min-width: 220px;
+	background: $sidebar-bg;
+	border-radius: 24px;
+	box-shadow: $sidebar-shadow;
+	padding: 24px;
+	z-index: 100;
+	color: $primary;
+	font-size: 1.1em;
+	backdrop-filter: blur($sidebar-blur);
+}
+
+@media (max-width: 1200px) {
+	.sidebar {
+		width: 72px;
+		padding: 12px 0;
+	}
+	.arch-logo {
+		width: 48px;
+		height: 48px;
+		font-size: 32px;
+	}
+	.app-btn, .workspace-btn, .sys-btn {
+		width: 32px;
+		height: 32px;
+		font-size: 16px;
+	}
+}

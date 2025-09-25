@@ -1,0 +1,152 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 48,
+  "spacing": 0,
+  "margin-top": 8,
+  "margin-left": 16,
+  "margin-right": 16,
+  
+  "modules-left": [
+    "custom/arch-logo-left",
+    "custom/running-apps"
+  ],
+
+  "modules-center": [
+    "custom/clock-dropdown"
+  ],
+
+  "modules-right": [
+    "network",
+    "pulseaudio",
+    "battery"
+  ],
+
+  "custom/arch-logo-left": {
+    "format": "󰣇",
+    "tooltip": false,
+    "on-click": "eww open sidebarwin"
+  },
+
+  "custom/running-apps": {
+    "exec": "~/.config/waybar/scripts/running-apps.sh",
+    "interval": 2,
+    "tooltip": false
+  },
+  "custom/clock-dropdown": {
+    "format": "{:%H:%M} ▼",
+    "tooltip": false,
+    "on-click": "eww open topbar-dropdown",
+    "exec": "date +'%H:%M'",
+    "interval": 10
+  },
+
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "1": "1",
+      "2": "2", 
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "default": ""
+    },
+    "persistent_workspaces": {
+      "*": 5
+    },
+    "on-click": "activate"
+  },
+
+  "hyprland/window": {
+    "format": "{}",
+    "max-length": 50,
+    "separate-outputs": true
+  },
+
+  "custom/dropdown-toggle": {
+    "format": "",
+    "tooltip": false,
+    "on-click": "$HOME/.config/waybar/scripts/toggle-dropdown.sh"
+  },
+
+  "clock": {
+    "format": "{:%H.%M}",
+    "format-alt": "{:%A, %B %d, %Y}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "year",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "on-click-right": "mode",
+      "format": {
+        "months": "<span color='#ffead3'><b>{}</b></span>",
+        "days": "<span color='#ecc6d9'><b>{}</b></span>",
+        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+      }
+    },
+    "actions": {
+      "on-click-right": "mode",
+      "on-click-forward": "tz_up",
+      "on-click-backward": "tz_down",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
+    }
+  },
+
+  "tray": {
+    "spacing": 8,
+    "icon-size": 20
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-bluetooth": "{icon} {volume}%",
+    "format-bluetooth-muted": " {icon}",
+    "format-muted": "",
+    "format-source": "{volume}% ",
+    "format-source-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", "", ""]
+    },
+    "on-click": "pavucontrol",
+    "on-click-right": "pamixer -t",
+    "scroll-step": 5
+  },
+
+  "network": {
+    "format-wifi": " {signalStrength}%",
+    "format-ethernet": "",
+    "format-linked": "{ifname} (No IP)",
+    "format-disconnected": "⚠",
+    "tooltip-format": "{essid}: {ipaddr}",
+    "on-click": "nm-connection-editor"
+  },
+
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-alt": "{icon} {time}",
+    "format-icons": ["", "", "", "", ""]
+  },
+
+  "custom/power": {
+    "format": "",
+    "tooltip": false,
+    "on-click": "wlogout"
+  }
+}

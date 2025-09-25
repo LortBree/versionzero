@@ -1,1 +1,3 @@
-# **SEDANG DALAM TAHAP PENGEMBANGAN**
+# versionzero
+
+Interactive Arch Linux system configuration.

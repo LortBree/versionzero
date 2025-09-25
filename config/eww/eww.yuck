@@ -1,0 +1,75 @@
+; Dropdown topbar (dipanggil dari jam tengah Waybar)
+(defwidget topbar-dropdown []
+	(box :class "topbar-dropdown" :orientation "vertical"
+		(tabs :class "dropdown-tabs"
+			:tab-names ["Kalender & Media" "Sticky Notes" "Task Manager"]
+			:tab-index dropdown_tab
+			(tab :name "Kalender & Media"
+				(box :orientation "vertical"
+					(calendar)
+					(label :text "Media Player (implementasi)")
+					(label :text "Unread Notifikasi (implementasi)")))
+			(tab :name "Sticky Notes"
+				(box :orientation "vertical"
+					(label :text "Sticky Note 1 (klik untuk edit)")
+					(label :text "Sticky Note 2")
+					(label :text "Sticky Note 3")
+					(label :text "Sticky Note 4")))
+			(tab :name "Task Manager"
+				(box :orientation "vertical"
+					(label :text "CPU Usage: (implementasi)")
+					(label :text "Suhu: (implementasi)")
+					(label :text "RAM Usage: (implementasi)")
+					(label :text "Disk Space: (implementasi)"))))))
+
+(defwindow topbar-dropdown
+	:geometry (geometry :x 400 :y 96 :width 640 :height 320)
+	:stacking "fg"
+	:anchor "top"
+	:exclusive false
+	:focusable true
+	(topbar-dropdown))
+; Sidebar utama
+(defwidget sidebar []
+	(box :class "sidebar" :orientation "vertical"
+		(box :class "sidebar-top" :orientation "vertical"
+			(button :class "arch-logo" :onclick "eww update show_wallpaper_popup=true" "󰣇")
+			(box :class "workspaces" :orientation "vertical"
+				(for [i (range 1 5)]
+					(button :class (str "workspace-btn ws-" i) :onclick (str "hyprctl dispatch workspace " i) (str i)))))
+		(box :class "sidebar-center" :orientation "vertical"
+			(button :class "app-btn term" :onclick "foot &" "")
+			(button :class "app-btn thunar" :onclick "thunar &" "")
+			(button :class "app-btn firefox" :onclick "firefox &" "")
+			(button :class "app-btn spotify" :onclick "spotify &" ""))
+		(box :class "sidebar-bottom" :orientation "vertical"
+			(button :class "sys-btn wifi" :onclick "nm-connection-editor &" "")
+			(button :class "sys-btn bluetooth" :onclick "blueman-manager &" "")
+			(button :class "sys-btn settings" :onclick "xfce4-settings-manager &" "")
+			(button :class "sys-btn mode" :onclick "eww update show_power_popup=true" "⏻"))))
+
+; Popup untuk ganti wallpaper/theme
+(defwidget wallpaper-popup []
+	(box :class "wallpaper-popup" :orientation "vertical"
+		(label :text "Ganti Wallpaper/Theme (implementasi skrip)")
+		(button :onclick "eww update show_wallpaper_popup=false" "Tutup")))
+
+; Popup untuk mode (poweroff, restart, lock)
+(defwidget power-popup []
+	(box :class "power-popup" :orientation "vertical"
+		(button :onclick "systemctl poweroff" "Poweroff")
+		(button :onclick "systemctl reboot" "Restart")
+		(button :onclick "swaylock &" "Lock")
+		(button :onclick "eww update show_power_popup=false" "Tutup")))
+
+; Main window
+(defwindow sidebarwin
+	:geometry (geometry :x 0 :y 0 :width 96 :height 1024)
+	:stacking "fg"
+	:anchor "left top"
+	:exclusive true
+	:focusable false
+	(box :orientation "vertical"
+		(sidebar)
+		(if show_wallpaper_popup (wallpaper-popup))
+		(if show_power_popup (power-popup))))
