@@ -1,16 +1,6 @@
 #!/bin/bash
 set -e
 
-REPO_URL="https://github.com/username/versionzero.git" # Ganti dengan URL repo dotfiles kamu
-TARGET_DIR="$HOME/.config/versionzero"
-
-echo "==> Clone/update dotfiles ke $TARGET_DIR"
-if [ -d "$TARGET_DIR/.git" ]; then
-	git -C "$TARGET_DIR" pull
-else
-	git clone "$REPO_URL" "$TARGET_DIR"
-fi
-
 echo "==> Update & install base tools"
 sudo pacman -Syu --noconfirm
 sudo pacman -S --needed --noconfirm \
