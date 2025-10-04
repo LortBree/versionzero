@@ -1,14 +1,99 @@
-# Minimal starship config for versionzero
-add_newline = false
+# VersionZero Starship Prompt Configuration
+# Minimal, fast, and informative shell prompt
+
+format = """
+[╭─](bold white)\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$cmd_duration
+[╰─](bold white)$character"""
+
+[username]
+style_user = "bold cyan"
+style_root = "bold red"
+format = "[$user]($style) "
+disabled = false
+show_always = true
+
+[hostname]
+ssh_only = false
+format = "[@$hostname](bold blue) "
+disabled = false
 
 [directory]
-read_only = "🔒"
-style = "cyan"
+truncation_length = 3
+truncate_to_repo = true
+format = "[$path]($style)[$read_only]($read_only_style) "
+style = "bold purple"
+read_only = " "
+read_only_style = "red"
 
-[job]
-threshold = 5
+[git_branch]
+symbol = " "
+format = "on [$symbol$branch]($style) "
+style = "bold green"
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "bold yellow"
+conflicted = "="
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "?${count}"
+stashed = "$${count}"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+
+[cmd_duration]
+min_time = 500
+format = "took [$duration]($style) "
+style = "bold yellow"
 
 [character]
-success_symbol = "❯"
-error_symbol = "✖"
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vicmd_symbol = "[❮](bold green)"
+
+[time]
+disabled = true
+format = "[$time]($style) "
+style = "bold white"
+time_format = "%T"
+
+[battery]
+disabled = true
+
+[nodejs]
+format = "via [$symbol($version )]($style)"
+symbol = " "
 style = "bold green"
+
+[python]
+format = "via [$symbol$pyenv_prefix($version )(\($virtualenv\) )]($style)"
+symbol = " "
+style = "bold yellow"
+
+[rust]
+format = "via [$symbol($version )]($style)"
+symbol = " "
+style = "bold red"
+
+[package]
+format = "is [$symbol$version]($style) "
+symbol = " "
+style = "bold blue"
+
+[memory_usage]
+disabled = true
+
+[status]
+disabled = false
+format = "[$symbol$status]($style) "
+symbol = "✘ "
+style = "bold red"
