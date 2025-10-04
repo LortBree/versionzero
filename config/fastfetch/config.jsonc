@@ -65,7 +65,7 @@
             "type": "datetime",
             "key": "Time",
             "keyColor": "cyan",
-            "format": "{1}-{2}-{11} {3}:{4}:{5}"
+            "format": "%Y-%m-%d %H:%M:%S"
         },
         "break",
         {
