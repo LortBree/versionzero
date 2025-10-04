@@ -85,7 +85,7 @@ These steps are performed from the **Arch Linux Live USB** to build the base sys
 After entering chroot, run the interactive system configuration script to set up hostname, user, locale, timezone, shell, and optionally GRUB bootloader:
 
 ```bash
-curl -O https://raw.githubusercontent.com/LortBree/versionzero/main/config.sh
+curl -O https://raw.githubusercontent.com/LortBree/versionzero/main/chroot.sh
 chmod +x config.sh
 ./config.sh
 ```
@@ -193,3 +193,4 @@ After installation completes:
 ---
 
 Repository: [https://github.com/LortBree/versionzero](https://github.com/LortBree/versionzero)
+
