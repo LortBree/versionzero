@@ -1,0 +1,14 @@
+# Minimal starship config for versionzero
+add_newline = false
+
+[directory]
+read_only = "🔒"
+style = "cyan"
+
+[job]
+threshold = 5
+
+[character]
+success_symbol = "❯"
+error_symbol = "✖"
+style = "bold green"

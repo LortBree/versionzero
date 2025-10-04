@@ -1,0 +1,61 @@
+# OS / temp
+*.swp
+*.bak
+.DS_Store
+*.tmp
+
+# IDE / editor
+.vscode/
+.idea/
+
+# Secrets / credentials
+*.key
+*.pem
+*.env
+.ssh/
+.gnupg/
+
+# Environment / secret patterns
+.env*
+*.secret
+credentials.json
+
+# Local config (user-specific)
+home/.config/**/secrets.*
+home/.config/**/auth.json
+
+*.tar
+*.tar.*
+*.jar
+*.exe
+*.msi
+*.deb
+*.zip
+*.tgz
+*.log
+*.log.*
+*.sig
+
+pkg/
+src/
+
+# Language / runtime caches
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+
+# Test / coverage / cache
+.pytest_cache/
+.coverage
+.cache/
+
+# Terraform
+.terraform/
+*.tfstate*
+.terraform.lock.hcl
+
+# OS thumbnails
+Thumbs.db
+desktop.ini
