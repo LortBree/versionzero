@@ -241,11 +241,25 @@ success "Timezone configured"
 
 # 3. Configure locale
 log "Setting up locale '$LOCALE'..."
-sed -i "s/^#$LOCALE/$LOCALE/" /etc/locale.gen
 
-# Also enable en_US.UTF-8 if different locale is chosen
+# Ensure the desired locale is uncommented
+if grep -q "^${LOCALE}" /etc/locale.gen; then
+    log "Locale already uncommented"
+elif grep -q "^#.*${LOCALE}" /etc/locale.gen; then
+    sed -i "s/^#.*${LOCALE}/${LOCALE}/" /etc/locale.gen
+else
+    echo "${LOCALE} UTF-8" >> /etc/locale.gen
+fi
+
+# Also ensure en_US.UTF-8 is available as fallback
 if [[ "$LOCALE" != "en_US.UTF-8" ]]; then
-    sed -i "s/^#en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen
+    if ! grep -q "^en_US.UTF-8" /etc/locale.gen; then
+        if grep -q "^#.*en_US.UTF-8" /etc/locale.gen; then
+            sed -i "s/^#.*en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen
+        else
+            echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+        fi
+    fi
 fi
 
 locale-gen
@@ -298,26 +312,28 @@ success "Sudo configured for wheel group"
 # 8. Create user directories
 log "Creating user directories..."
 sudo -u "$USERNAME" mkdir -p "/home/$USERNAME"/{Downloads,Documents,Pictures,Videos,Music}
+success "User directories created"
 
 # 9. Set up shell configuration
 log "Setting up shell configuration..."
 case "$USER_SHELL" in
     bash)
-        sudo -u "$USERNAME" cp /etc/skel/.bashrc "/home/$USERNAME/"
+        sudo -u "$USERNAME" cp /etc/skel/.bashrc "/home/$USERNAME/" 2>/dev/null || true
         sudo -u "$USERNAME" cp /etc/skel/.bash_profile "/home/$USERNAME/" 2>/dev/null || true
         ;;
     fish)
+        # Create fish config directory first
         sudo -u "$USERNAME" mkdir -p "/home/$USERNAME/.config/fish"
         sudo -u "$USERNAME" tee "/home/$USERNAME/.config/fish/config.fish" > /dev/null << 'EOF'
 # Fish shell configuration for versionzero
-set fish_greeting "Welcome to Fish shell! 🐠"
+set fish_greeting "Welcome to Fish shell!"
 
 # Common aliases
 alias ll "ls -la"
 alias la "ls -A"
 alias l "ls -CF"
 alias grep "grep --color=auto"
-alias ..  "cd .."
+alias .. "cd .."
 alias ... "cd ../.."
 
 # Add ~/bin to PATH if it exists
@@ -349,8 +365,8 @@ alias ll="ls -la"
 alias la="ls -A"
 alias l="ls -CF"
 alias grep="grep --color=auto"
-alias .. "cd .."
-alias ... "cd ../.."
+alias ..="cd .."
+alias ...="cd ../.."
 
 # Enable colors and better prompt
 autoload -U colors && colors
@@ -467,14 +483,21 @@ log "Enabling NetworkManager service..."
 systemctl enable NetworkManager
 success "NetworkManager enabled"
 
-# 13. Enable multilib repository
+# 13. Enable multilib repository (FIXED)
 log "Enabling multilib repository..."
-if ! grep -q "^\[multilib\]" /etc/pacman.conf; then
+if grep -q "^[multilib]" /etc/pacman.conf; then
+    log "Multilib repository already enabled"
+elif grep -q "^#\[multilib\]" /etc/pacman.conf; then
+    # Uncomment existing multilib section
+    sed -i '/^#\[multilib\]/s/^#//' /etc/pacman.conf
+    sed -i '/^#Include.*multilib/s/^#//' /etc/pacman.conf
+    pacman -Sy
+    success "Multilib repository enabled (uncommented)"
+else
+    # Add new multilib section
     echo -e "\n[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
     pacman -Sy
-    success "Multilib repository enabled"
-else
-    log "Multilib repository already enabled"
+    success "Multilib repository added"
 fi
 
 # Final summary
@@ -495,7 +518,7 @@ log "2. Unmount partitions: umount -R /mnt"
 log "3. Reboot: reboot"
 log "4. Login as '$USERNAME' and run install.sh"
 echo
-echo -e "${CYAN}🎉 System is ready for reboot!${NC}"
+echo -e "${CYAN}System is ready for reboot!${NC}"
 
 # Clean up sensitive variables
 unset ROOT_PASS USER_PASS ROOT_PASS2 USER_PASS2
