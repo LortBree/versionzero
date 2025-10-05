@@ -1,0 +1,90 @@
+/* VersionZero Wlogout Style - Four-Leaf Clover Layout */
+/* Animated "leaf pull" effect on hover */
+
+* {
+    background-image: none;
+    font-family: "JetBrainsMono Nerd Font", "Material Design Icons";
+    font-size: 14px;
+}
+
+window {
+    background-color: rgba(31, 28, 44, 0.8);
+}
+
+button {
+    background-color: rgba(31, 28, 44, 0.4);
+    border: 1.5px solid transparent;
+    border-image: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.1) 100%) 1;
+    color: #FFFFFF;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 30%;
+    border-radius: 24px;
+    margin: 5px;
+    transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+button:focus,
+button:active {
+    background-color: rgba(146, 141, 171, 0.5);
+    border-image: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(146,141,171,0.6) 100%) 1;
+    outline-style: none;
+}
+
+button:hover {
+    background-color: rgba(146, 141, 171, 0.4);
+    border-image: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(146,141,171,0.8) 100%) 1;
+}
+
+/* Four-Leaf Clover Positioning */
+/* Icons will be searched in: /usr/local/share/wlogout/icons/ then /usr/share/wlogout/icons/ */
+
+#lock {
+    background-image: image(url("/usr/local/share/wlogout/icons/lock.png"), url("/usr/share/wlogout/icons/lock.png"));
+    margin: 10px 0px 100px 0px;
+}
+
+#lock:hover {
+    transform: scale(1.15) translateY(-20px);
+    box-shadow: 0 10px 30px rgba(146, 141, 171, 0.3);
+}
+
+#logout {
+    background-image: image(url("/usr/local/share/wlogout/icons/logout.png"), url("/usr/share/wlogout/icons/logout.png"));
+    margin: 100px 0px 10px 0px;
+}
+
+#logout:hover {
+    transform: scale(1.15) translateY(20px);
+    box-shadow: 0 -10px 30px rgba(146, 141, 171, 0.3);
+}
+
+#suspend {
+    background-image: image(url("/usr/local/share/wlogout/icons/suspend.png"), url("/usr/share/wlogout/icons/suspend.png"));
+    margin: 0px 100px 0px 10px;
+}
+
+#suspend:hover {
+    transform: scale(1.15) translateX(-20px);
+    box-shadow: 10px 0 30px rgba(146, 141, 171, 0.3);
+}
+
+#shutdown {
+    background-image: image(url("/usr/local/share/wlogout/icons/shutdown.png"), url("/usr/share/wlogout/icons/shutdown.png"));
+    margin: 0px 10px 0px 100px;
+}
+
+#shutdown:hover {
+    transform: scale(1.15) translateX(20px);
+    box-shadow: -10px 0 30px rgba(146, 141, 171, 0.3);
+}
+
+#restart {
+    background-image: image(url("/usr/local/share/wlogout/icons/restart.png"), url("/usr/share/wlogout/icons/reboot.png"));
+    margin: 10px 0px 100px 0px;
+}
+
+#restart:hover {
+    transform: scale(1.15) translateY(-20px);
+    box-shadow: 0 10px 30px rgba(146, 141, 171, 0.3);
+}

@@ -1,0 +1,29 @@
+# VersionZero Wofi Configuration
+# App launcher and wallpaper selector behavior
+
+# Display settings
+width=600
+height=500
+location=center
+show=drun
+prompt=Search apps...
+filter_rate=100
+allow_markup=true
+no_actions=true
+halign=fill
+orientation=vertical
+content_halign=fill
+insensitive=true
+allow_images=true
+image_size=48
+
+# Behavior
+gtk_dark=true
+term=alacritty
+hide_scroll=true
+matching=fuzzy
+key_expand=Tab
+
+# Performance
+cache_file=/tmp/wofi-cache
+drun-print_command=false

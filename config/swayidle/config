@@ -1,0 +1,18 @@
+# VersionZero Swayidle Configuration
+# Idle management: dim screen, lock, and suspend
+
+# Dim screen after 13 minutes (780 seconds) - 2 minutes before lock
+timeout 780 'brightnessctl set 10%' \
+    resume 'brightnessctl set 75%'
+
+# Lock screen after 15 minutes (900 seconds) of inactivity
+timeout 900 'swaylock -f'
+
+# Suspend system after 30 minutes of being locked (1800 seconds after lock = 2700 total)
+timeout 2700 'systemctl suspend'
+
+# Lock screen before sleep (laptop lid closed, etc.)
+before-sleep 'swaylock -f'
+
+# Lock on idle from loginctl
+lock 'swaylock -f'

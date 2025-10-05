@@ -1,0 +1,59 @@
+# VersionZero Swaylock Configuration
+# Lock screen styling - Midnight Elegance theme
+
+# Disable daemonize to work with swayidle
+daemonize
+
+# Appearance
+ignore-empty-password
+show-failed-attempts
+show-keyboard-layout
+
+# Colors (Midnight Elegance)
+color=1F1C2C
+
+# Ring colors
+ring-color=928DAB
+ring-clear-color=4CA1AF
+ring-caps-lock-color=FFC107
+ring-ver-color=928DAB
+ring-wrong-color=F44336
+
+# Key indicator colors
+key-hl-color=928DAB
+bs-hl-color=F44336
+
+# Separator color
+separator-color=00000000
+
+# Inside ring colors
+inside-color=1F1C2C88
+inside-clear-color=4CA1AF88
+inside-caps-lock-color=FFC10788
+inside-ver-color=928DAB88
+inside-wrong-color=F4433688
+
+# Text colors
+text-color=FFFFFF
+text-clear-color=FFFFFF
+text-caps-lock-color=FFFFFF
+text-ver-color=FFFFFF
+text-wrong-color=FFFFFF
+
+# Layout
+indicator-radius=120
+indicator-thickness=10
+indicator-caps-lock
+
+# Effects
+fade-in=0.2
+grace=2
+grace-no-mouse
+grace-no-touch
+
+# Font
+font=JetBrainsMono Nerd Font
+font-size=24
+
+# Behavior
+disable-caps-lock-text

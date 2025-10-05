@@ -1,0 +1,321 @@
+;; VersionZero EWW Widget Definitions
+;; Sidebar Left (Dock) + Sidebar Right (Dashboard)
+
+;; ===== VARIABLES =====
+
+;; Sidebar visibility states
+(defvar sidebar_left_visible false)
+(defvar sidebar_right_visible false)
+
+;; Dashboard page state (0 = main, 1 = notifications/clipboard)
+(defvar dashboard_page 0)
+
+;; System info polling
+(defpoll cpu_usage :interval "2s" "scripts/system-info.sh cpu")
+(defpoll gpu_usage :interval "2s" "scripts/system-info.sh gpu")
+(defpoll ram_usage :interval "2s" "scripts/system-info.sh ram")
+(defpoll cpu_temp :interval "3s" "scripts/system-info.sh temp")
+
+;; Brightness
+(defpoll brightness :interval "1s" "brightnessctl -m | cut -d',' -f4 | tr -d '%'")
+
+;; Music info (playerctl)
+(defpoll music_title :interval "1s" "playerctl metadata title 2>/dev/null || echo 'No Music Playing'")
+(defpoll music_artist :interval "1s" "playerctl metadata artist 2>/dev/null || echo ''")
+(defpoll music_status :interval "1s" "playerctl status 2>/dev/null || echo 'Stopped'")
+
+;; Date and time
+(defpoll time :interval "10s" "date '+%H:%M'")
+(defpoll date :interval "60s" "date '+%A, %d %B %Y'")
+(defpoll calendar :interval "3600s" "cal")
+
+;; Night light status
+(defpoll nightlight_status :interval "3s" "pgrep -x gammastep > /dev/null && echo 'on' || echo 'off'")
+
+;; Performance mode
+(defpoll perf_mode :interval "5s" "cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null || echo 'unknown'")
+
+;; Notifications count
+(defpoll notif_count :interval "2s" "makoctl list 2>/dev/null | jq length 2>/dev/null || echo '0'")
+
+;; Clipboard history count
+(defpoll clip_count :interval "2s" "cliphist list 2>/dev/null | wc -l")
+
+;; ===== SIDEBAR LEFT (DOCK) =====
+
+(defwindow sidebar-left
+  :monitor 0
+  :geometry (geometry 
+    :x "15px"
+    :y "50%"
+    :width "70px"
+    :height "auto"
+    :anchor "center left")
+  :stacking "overlay"
+  :exclusive false
+  :focusable false
+  :namespace "eww_sidebar_left"
+  
+  (box 
+    :class "sidebar-left"
+    :orientation "v"
+    :space-evenly false
+    :spacing 15
+    
+    ;; Workspaces section
+    (box
+      :class "workspace-container"
+      :orientation "v"
+      :space-evenly false
+      :spacing 8
+      (button :class "dock-icon workspace" :onclick "hyprctl dispatch workspace 1" "1")
+      (button :class "dock-icon workspace" :onclick "hyprctl dispatch workspace 2" "2")
+      (button :class "dock-icon workspace" :onclick "hyprctl dispatch workspace 3" "3")
+      (button :class "dock-icon workspace" :onclick "hyprctl dispatch workspace 4" "4"))
+    
+    ;; Separator
+    (box :class "separator" :height 2)
+    
+    ;; App launcher icons
+    (box
+      :class "apps-container"
+      :orientation "v"
+      :space-evenly false
+      :spacing 8
+      (button :class "dock-icon" :onclick "thunar" "")
+      (button :class "dock-icon" :onclick "firefox" "")
+      (button :class "dock-icon" :onclick "alacritty" "󰆍")
+      (button :class "dock-icon" :onclick "spotify" ""))
+    
+    ;; Separator
+    (box :class "separator" :height 2)
+    
+    ;; System icons
+    (box
+      :class "system-container"
+      :orientation "v"
+      :space-evenly false
+      :spacing 8
+      (button :class "dock-icon" :onclick "blueman-manager" "󰂯")
+      (button :class "dock-icon" :onclick "nwg-look" "")
+      (button :class "dock-icon" :onclick "wlogout" ""))))
+
+;; ===== SIDEBAR RIGHT (DASHBOARD) =====
+
+(defwindow sidebar-right
+  :monitor 0
+  :geometry (geometry
+    :x "-15px"
+    :y "80px"
+    :width "400px"
+    :height "auto"
+    :anchor "top right")
+  :stacking "overlay"
+  :exclusive false
+  :focusable false
+  :namespace "eww_sidebar_right"
+  
+  (box
+    :class "sidebar-right"
+    :orientation "v"
+    :space-evenly false
+    :spacing 15
+    
+    ;; Page 1: Main Dashboard
+    (revealer
+      :reveal "${dashboard_page == 0}"
+      :transition "slideright"
+      :duration "300ms"
+      (box
+        :orientation "v"
+        :space-evenly false
+        :spacing 15
+        
+        ;; Row 1: Music Player + Profile
+        (box
+          :class "row"
+          :space-evenly false
+          :spacing 15
+          
+          ;; Music Player
+          (box
+            :class "widget music-player"
+            :orientation "v"
+            :space-evenly false
+            :spacing 10
+            (label :class "widget-title" :text "Music Player")
+            (box
+              :orientation "v"
+              :space-evenly false
+              (label :class "music-title" :limit-width 20 :text music_title)
+              (label :class "music-artist" :limit-width 20 :text music_artist))
+            (box
+              :class "music-controls"
+              :space-evenly true
+              (button :onclick "playerctl previous" "")
+              (button :onclick "playerctl play-pause" 
+                "${music_status == 'Playing' ? '' : ''}")
+              (button :onclick "playerctl next" "")))
+          
+          ;; Profile
+          (box
+            :class "widget profile"
+            :orientation "v"
+            :space-evenly false
+            :spacing 10
+            (label :class "widget-title" :text "Profile")
+            (label :class "username" :text "${USER}")
+            (label :class "uptime" :text "Uptime: ${exec-once 'uptime -p'}")))
+        
+        ;; Row 2: Calendar/Date + CPU
+        (box
+          :class "row"
+          :space-evenly false
+          :spacing 15
+          
+          ;; Calendar (larger, spans 2 rows visually)
+          (box
+            :class "widget calendar-widget"
+            :orientation "v"
+            :space-evenly false
+            :spacing 10
+            (label :class "widget-title" :text "Calendar")
+            (label :class "date-display" :text date)
+            (label :class "time-display" :text time))
+          
+          ;; System Monitors (stacked)
+          (box
+            :orientation "v"
+            :space-evenly false
+            :spacing 15
+            
+            ;; CPU
+            (box
+              :class "widget monitor"
+              :orientation "v"
+              (label :class "monitor-label" :text "CPU")
+              (label :class "monitor-value" :text "${cpu_usage}%")
+              (progress :class "monitor-bar" :value cpu_usage))
+            
+            ;; GPU
+            (box
+              :class "widget monitor"
+              :orientation "v"
+              (label :class "monitor-label" :text "GPU")
+              (label :class "monitor-value" :text "${gpu_usage}%")
+              (progress :class "monitor-bar" :value gpu_usage))
+            
+            ;; RAM
+            (box
+              :class "widget monitor"
+              :orientation "v"
+              (label :class "monitor-label" :text "RAM")
+              (label :class "monitor-value" :text "${ram_usage}%")
+              (progress :class "monitor-bar" :value ram_usage))))
+        
+        ;; Brightness Control
+        (box
+          :class "widget brightness-widget"
+          :orientation "v"
+          :space-evenly false
+          :spacing 10
+          (box
+            :space-evenly false
+            (label :class "widget-title" :text "Brightness")
+            (label :class "brightness-value" :text "~${brightness}%"))
+          (scale
+            :class "brightness-slider"
+            :value brightness
+            :min 5
+            :max 100
+            :onchange "brightnessctl set {}%"))
+        
+        ;; Quick Action Buttons
+        (box
+          :class "quick-actions"
+          :space-evenly true
+          :spacing 10
+          
+          ;; Night Light
+          (button
+            :class "quick-button ${nightlight_status == 'on' ? 'active' : ''}"
+            :onclick "scripts/night-light-toggle.sh"
+            (box
+              :orientation "v"
+              :space-evenly false
+              (label :class "button-icon" :text "")
+              (label :class "button-label" :text "Night\nLight")))
+          
+          ;; Theme Switch
+          (button
+            :class "quick-button"
+            :onclick "scripts/theme-switcher.sh next"
+            (box
+              :orientation "v"
+              :space-evenly false
+              (label :class "button-icon" :text "")
+              (label :class "button-label" :text "Theme\nSwitch")))
+          
+          ;; Performance
+          (button
+            :class "quick-button"
+            :onclick "scripts/performance-mode.sh next"
+            (box
+              :orientation "v"
+              :space-evenly false
+              (label :class "button-icon" :text "${perf_mode == 'performance' ? '' : perf_mode == 'powersave' ? '󰾅' : ''}")
+              (label :class "button-label" :text "Perfor\nmance"))))
+        
+        ;; Page indicator
+        (box
+          :class "page-indicator"
+          :space-evenly true
+          (label :class "dot active" :text "●")
+          (label :class "dot" :text "●"))))
+    
+    ;; Page 2: Notifications + Clipboard
+    (revealer
+      :reveal "${dashboard_page == 1}"
+      :transition "slideleft"
+      :duration "300ms"
+      (box
+        :orientation "v"
+        :space-evenly false
+        :spacing 15
+        
+        ;; Notifications
+        (box
+          :class "widget notifications-widget"
+          :orientation "v"
+          :space-evenly false
+          :spacing 10
+          (box
+            :space-evenly false
+            (label :class "widget-title" :text "Notifications")
+            (label :class "notif-count" :text "${notif_count}"))
+          (scroll
+            :height 250
+            :vscroll true
+            (literal :content "${exec-once 'scripts/notification-manager.sh get'}")))
+        
+        ;; Clipboard History
+        (box
+          :class "widget clipboard-widget"
+          :orientation "v"
+          :space-evenly false
+          :spacing 10
+          (box
+            :space-evenly false
+            (label :class "widget-title" :text "Clipboard")
+            (label :class "clip-count" :text "${clip_count}"))
+          (scroll
+            :height 250
+            :vscroll true
+            (literal :content "${exec-once 'scripts/clipboard-manager.sh get'}")))
+        
+        ;; Page indicator
+        (box
+          :class "page-indicator"
+          :space-evenly true
+          (label :class "dot" :text "●")
+          (label :class "dot active" :text "●"))))))
