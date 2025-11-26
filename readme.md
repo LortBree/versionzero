@@ -1,4 +1,4 @@
-# versionzero [On Progress]
+# versionzero [Stalled]
 
 ![versionzero](https://img.shields.io/badge/version-0.0.0-blue)
 ![Arch Linux](https://img.shields.io/badge/Arch-Linux-1793D1?logo=arch-linux)
